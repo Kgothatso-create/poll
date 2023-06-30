@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Poll app flask</title>
+</head>
+<body>
+    <!-- Heading for the list of polls -->
+    <h3>Polls:</h3>
+    
+    <ul>
+        <!-- Loop through the polls and display each poll as a list item -->
+        {% for key, value in polls.iterrows() %}
+            <li>
+                <!-- Link to view individual poll based on the poll's ID -->
+                <a href="{{ url_for("polls", id=key) }}">
+                    <!-- Display the poll's name -->
+                    {{ value["poll"] }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Link to create a new poll -->
+    <a href="{{ url_for("create_poll") }}">Create New poll</a>
+</body>
+</html>

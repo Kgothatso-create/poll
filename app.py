@@ -24,13 +24,13 @@ polls_df = pd.read_csv("polls.csv").set_index("id")
 
 @app.route("/")
 def index():
-    return "Hello world"
+    return render_template("index.html", polls=polls_df)
 
 @app.route("/polls/<id>")
 def polls(id):
     # Retrieve a specific poll based on the given ID
     poll = polls_df.loc[int(id)]
-    return str(poll)
+    return render_template("show_poll.html", poll=poll)
 
 @app.route("/polls", methods=["GET", "POST"])
 def create_poll():

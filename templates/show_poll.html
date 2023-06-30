@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show poll details</title>
+</head>
+<body>
+    <!-- Display the poll's title -->
+    <h3>{{ poll["poll"] }}</h3>
+    
+    <!-- Display option 1 with vote count and a link to vote -->
+    <p><b>{{poll["option1"]}}:</b> {{ poll["votes1"]}} <a href="{{ url_for("vote", id=poll.name , option=1)}}"> Vote </a> </p>
+    
+    <!-- Display option 2 with vote count and a link to vote -->
+    <p><b>{{poll["option2"]}}:</b> {{ poll["votes2"]}} <a href="{{ url_for("vote", id=poll.name , option=2)}}"> Vote </a> </p>
+    
+    <!-- Display option 3 with vote count and a link to vote -->
+    <p><b>{{poll["option3"]}}:</b> {{ poll["votes3"]}} <a href="{{ url_for("vote", id=poll.name , option=3)}}"> Vote </a> </p>
+    
+    <!-- Link to go back to the main page -->
+    <a href="{{ url_for("index") }}">Back</a>
+</body>
+</html>
