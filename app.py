@@ -35,13 +35,44 @@ def polls(id):
 @app.route("/polls", methods=["GET", "POST"])
 def create_poll():
     if request.method == "GET":
-        pass
+        # Display the form to create a new poll
+        return render_template("new_poll.html")
     elif request.method == "POST":
-        pass
+        # Retrieve the form data submitted to create a new poll
+        poll = request.form["poll"]
+        option1 = request.form["option1"]
+        option2 = request.form["option2"]
+        option3 = request.form["option3"]
+        
+        # Add the new poll to the polls DataFrame
+        polls_df.loc[max(polls_df.index.values) + 1] = [poll, option1, option2, option3, 0, 0, 0]
+        
+        # Save the updated polls DataFrame to a CSV file
+        polls_df.to_csv("polls.csv")
+        
+        # Redirect the user to the index page
+        return redirect(url_for("index"))
+
 
 @app.route("/vote/<id>/<option>")
 def vote(id, option):
-    pass
+    if request.cookies.get(f"vote_{id}_cookie") is None:
+        # Check if the user has already voted for this poll
+        # If not, update the vote count for the selected option
+        polls_df.at[int(id), "votes" + str(option)] += 1
+        
+        # Save the updated polls DataFrame to a CSV file
+        polls_df.to_csv("polls.csv")
+        
+        # Create a response object and set a cookie to indicate that the user has voted
+        response = make_response(redirect(url_for("polls", id=id)))
+        response.set_cookie(f"vote_{id}_cookie", str(option))
+        
+        return response
+    else:
+        # If the user has already voted, return an error message
+        return "Cannot vote more than once!"
+
 
 if __name__ == "__main__":
     # Run the Flask app on localhost in debug mode
